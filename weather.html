@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        body {
+            background-color: #a4c2e2;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            background-color: #0a4f9a;
+            width: 300px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+        }
+        input {
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+        }
+        button {
+            padding: 8px 15px;
+            border: none;
+            background-color: #336699;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .weather-icon {
+            font-size: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1>CURRENT WEATHER CONDITIONS</h1>
+    <div class="container">
+        <h3>ENTER THE CITY:</h3>
+        <input type="text" id="city" placeholder="City name">
+        <button onclick="getWeather()">Find</button>
+        <div class="weather-icon">☀️</div>
+        <p>Weather: <span id="weather"></span></p>
+        <p>Temperature: <span id="temperature"></span>°C</p>
+    </div>
+
+    <script>
+        async function getWeather() {
+            const city = document.getElementById("city").value;
+            const apiKey = "a037c64a3d2dee3772aa2b56b779131b";
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
+            
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.cod === 200) {
+                    document.getElementById("weather").innerText = data.weather[0].description;
+                    document.getElementById("temperature").innerText = data.main.temp;
+                } else {
+                    alert("City not found!");
+                }
+            } catch (error) {
+                alert("Error fetching data");
+            }
+        }
+    </script>
+</body>
+</html>
